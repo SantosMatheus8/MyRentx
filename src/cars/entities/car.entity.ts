@@ -24,23 +24,23 @@ export class Car {
   @Column()
   description: string;
 
-  @Column()
-  daily_rate: number;
+  @Column({ name: 'daily_rate' })
+  dailyRate: number;
 
   @Column()
   available: boolean;
 
-  @Column()
-  license_plate: string;
+  @Column({ name: 'license_plate' })
+  licensePlate: string;
 
-  @Column()
-  fine_amount: number;
+  @Column({ name: 'fine_amount' })
+  fineAmount: number;
 
   @Column()
   brand: string;
 
-  @Column()
-  category_id: string;
+  @Column({ name: 'category_id' })
+  categoryId: string;
 
   @ManyToOne(() => Category, (category) => category.car)
   @JoinColumn({ name: 'category_id' })

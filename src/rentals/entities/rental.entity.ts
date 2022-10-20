@@ -13,20 +13,20 @@ export class Rental {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  car_id: string;
+  @Column({ name: 'car_id' })
+  carId: string;
 
-  @Column()
-  user_id: string;
+  @Column({ name: 'user_id' })
+  userId: string;
 
-  @Column()
-  start_date: Date;
+  @Column({ name: 'start_date' })
+  startDate: Date;
 
-  @Column()
-  end_date: Date;
+  @Column({ name: 'end_date' })
+  endDate: Date;
 
-  @Column()
-  expected_return_date: Date;
+  @Column({ name: 'expeted_return_date' })
+  expectedReturnDate: Date;
 
   @Column()
   total: number;

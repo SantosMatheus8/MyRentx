@@ -1,1 +1,4 @@
-export class CreateSpecificationDto {}
+export class CreateSpecificationDto {
+  name: string;
+  description: string;
+}
