@@ -10,7 +10,9 @@ import {
 import { SpecificationsService } from './specifications.service';
 import { CreateSpecificationDto } from './dto/create-specification.dto';
 import { UpdateSpecificationDto } from './dto/update-specification.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Specifications')
 @Controller('specifications')
 export class SpecificationsController {
   constructor(private readonly specificationsService: SpecificationsService) {}

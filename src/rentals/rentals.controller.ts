@@ -10,7 +10,9 @@ import {
 import { RentalsService } from './rentals.service';
 import { CreateRentalDto } from './dto/create-rental.dto';
 import { UpdateRentalDto } from './dto/update-rental.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Rentals')
 @Controller('rentals')
 export class RentalsController {
   constructor(private readonly rentalsService: RentalsService) {}
