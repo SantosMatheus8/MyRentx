@@ -1,4 +1,6 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Car } from 'src/cars/entities/car.entity';
+import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateRentalDto } from './dto/create-rental.dto';
 import { UpdateRentalDto } from './dto/update-rental.dto';
@@ -9,10 +11,40 @@ export class RentalsService {
   constructor(
     @Inject('RentalRepository')
     private rentalRepository: Repository<Rental>,
+    @Inject('CarRepository')
+    private carRepository: Repository<Car>,
+    @Inject('UserRepository') private userRepository: Repository<User>,
   ) {}
 
   async create(createRentalDto: CreateRentalDto) {
-    const rental = this.rentalRepository.create(createRentalDto);
+    const car = await this.carRepository.findOne({
+      where: { id: createRentalDto.carId },
+    });
+
+    const user = await this.userRepository.findOne({
+      where: { id: createRentalDto.userId },
+    });
+
+    if (!car) {
+      throw new NotFoundException(
+        `Não foi encontrado um carro com o ID informado`,
+      );
+    }
+
+    if (!user) {
+      throw new NotFoundException(
+        `Não foi encontrado um carro com o ID informado`,
+      );
+    }
+
+    const rental = this.rentalRepository.create({
+      car,
+      user,
+      startDate: createRentalDto.startDate,
+      endDate: createRentalDto.endDate,
+      total: createRentalDto.total,
+      expectedReturnDate: createRentalDto.expectedReturnDate,
+    });
 
     return this.rentalRepository.save(rental);
   }

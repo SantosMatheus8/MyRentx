@@ -2,12 +2,14 @@ import { Car } from 'src/cars/entities/car.entity';
 import {
   Column,
   CreateDateColumn,
+  Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
+@Entity('cars_image')
 export class CarsImage {
   @PrimaryGeneratedColumn('uuid')
   id: string;

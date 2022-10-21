@@ -2,11 +2,13 @@ import { Car } from 'src/cars/entities/car.entity';
 import {
   Column,
   CreateDateColumn,
+  Entity,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
+@Entity('categories')
 export class Category {
   @PrimaryGeneratedColumn('uuid')
   id: string;

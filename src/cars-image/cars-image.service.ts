@@ -1,4 +1,5 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Car } from 'src/cars/entities/car.entity';
 import { Repository } from 'typeorm';
 import { CreateCarsImageDto } from './dto/create-cars-image.dto';
 import { UpdateCarsImageDto } from './dto/update-cars-image.dto';
@@ -9,10 +10,26 @@ export class CarsImageService {
   constructor(
     @Inject('CarsImageRepository')
     private carsImageRepository: Repository<CarsImage>,
+    @Inject('CarRepository')
+    private carRepository: Repository<Car>,
   ) {}
 
   async create(createCarsImageDto: CreateCarsImageDto) {
-    const carImage = this.carsImageRepository.create(createCarsImageDto);
+    const car = await this.carRepository.findOne({
+      where: { id: createCarsImageDto.carId },
+    });
+
+    if (!car) {
+      throw new NotFoundException(
+        `Não foi encontrado um carro com o ID informado}`,
+      );
+    }
+
+    const carImage = this.carsImageRepository.create({
+      car,
+      name: createCarsImageDto.name,
+      description: createCarsImageDto.description,
+    });
 
     return this.carsImageRepository.save(carImage);
   }

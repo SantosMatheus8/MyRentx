@@ -1,4 +1,5 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Category } from 'src/categories/entities/category.entity';
 import { Repository } from 'typeorm';
 import { CreateCarDto } from './dto/create-car.dto';
 import { UpdateCarDto } from './dto/update-car.dto';
@@ -9,10 +10,31 @@ export class CarsService {
   constructor(
     @Inject('CarRepository')
     private carRepository: Repository<Car>,
+    @Inject('CategoryRepository')
+    private categoryRepository: Repository<Category>,
   ) {}
 
   async create(createCarDto: CreateCarDto) {
-    const car = this.carRepository.create(createCarDto);
+    const category = await this.categoryRepository.findOne({
+      where: { id: createCarDto.categoryId },
+    });
+
+    if (!category) {
+      throw new NotFoundException(
+        `Não foi encontrado uma categoria com o ID informado`,
+      );
+    }
+
+    const car = this.carRepository.create({
+      category,
+      name: createCarDto.name,
+      description: createCarDto.description,
+      dailyRate: createCarDto.dailyRate,
+      available: createCarDto.available,
+      licensePlate: createCarDto.licensePlate,
+      fineAmount: createCarDto.fineAmount,
+      brand: createCarDto.brand,
+    });
 
     return this.carRepository.save(car);
   }
@@ -42,12 +64,12 @@ export class CarsService {
       );
     }
 
-    return car;
+    return this.carRepository.save(car);
   }
 
   async remove(id: string) {
-    const car = this.findOne(id);
+    const car = await this.findOne(id);
 
-    return car;
+    return this.carRepository.remove(car);
   }
 }

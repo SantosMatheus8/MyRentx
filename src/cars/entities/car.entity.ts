@@ -5,6 +5,7 @@ import { Specification } from 'src/specifications/entities/specification.entity'
 import {
   Column,
   CreateDateColumn,
+  Entity,
   JoinColumn,
   JoinTable,
   ManyToMany,
@@ -14,6 +15,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+@Entity('cars')
 export class Car {
   @PrimaryGeneratedColumn('uuid')
   id: string;

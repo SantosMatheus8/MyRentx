@@ -3,21 +3,17 @@ import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
+  Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
+@Entity('rentals')
 export class Rental {
   @PrimaryGeneratedColumn('uuid')
   id: string;
-
-  @Column({ name: 'car_id' })
-  carId: string;
-
-  @Column({ name: 'user_id' })
-  userId: string;
 
   @Column({ name: 'start_date' })
   startDate: Date;
@@ -25,7 +21,7 @@ export class Rental {
   @Column({ name: 'end_date' })
   endDate: Date;
 
-  @Column({ name: 'expeted_return_date' })
+  @Column({ name: 'expected_return_date' })
   expectedReturnDate: Date;
 
   @Column()

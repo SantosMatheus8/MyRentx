@@ -44,6 +44,8 @@ export class CategoriesService {
         `Não foi encontrado uma categoria com o ID : ${id}`,
       );
     }
+
+    return this.categoryRepository.save(category);
   }
 
   async remove(id: string) {
