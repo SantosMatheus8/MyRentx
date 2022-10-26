@@ -67,4 +67,10 @@ export class Car {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
+
+  constructor() {
+    if (!this.available) {
+      this.available = true;
+    }
+  }
 }

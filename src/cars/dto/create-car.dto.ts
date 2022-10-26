@@ -10,9 +10,6 @@ export class CreateCarDto {
   @ApiProperty({ description: 'Car daily rate' })
   dailyRate: number;
 
-  @ApiProperty({ description: 'Car availability' })
-  available: boolean;
-
   @ApiProperty({ description: 'Car license plate' })
   licensePlate: string;
 

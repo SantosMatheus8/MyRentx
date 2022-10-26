@@ -1,4 +1,9 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Category } from 'src/categories/entities/category.entity';
 import { Repository } from 'typeorm';
 import { CreateCarDto } from './dto/create-car.dto';
@@ -25,12 +30,19 @@ export class CarsService {
       );
     }
 
+    const licensePlate = await this.carRepository.findOne({
+      where: { licensePlate: createCarDto.licensePlate },
+    });
+
+    if (licensePlate) {
+      throw new BadRequestException('A placa informada já existe');
+    }
+
     const car = this.carRepository.create({
       category,
       name: createCarDto.name,
       description: createCarDto.description,
       dailyRate: createCarDto.dailyRate,
-      available: createCarDto.available,
       licensePlate: createCarDto.licensePlate,
       fineAmount: createCarDto.fineAmount,
       brand: createCarDto.brand,
