@@ -51,8 +51,26 @@ export class CarsService {
     return this.carRepository.save(car);
   }
 
-  async findAll() {
-    return this.carRepository.find();
+  async findAll(brand?: string, categoryId?: string, name?: string) {
+    const carsQuery = this.carRepository
+      .createQueryBuilder('c')
+      .where('available = :available', { available: true });
+
+    if (brand) {
+      carsQuery.andWhere('brand = :brand', { brand });
+    }
+
+    if (name) {
+      carsQuery.andWhere('name = :name', { name });
+    }
+
+    if (categoryId) {
+      carsQuery.andWhere('category_id = :categoryId', { categoryId });
+    }
+
+    const cars = await carsQuery.getMany();
+
+    return cars;
   }
 
   async findOne(id: string) {
