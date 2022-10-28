@@ -10,12 +10,6 @@ export class CreateRentalDto {
   @ApiProperty({ description: 'Rental start date' })
   startDate: Date;
 
-  @ApiProperty({ description: 'Rental end date' })
-  endDate: Date;
-
   @ApiProperty({ description: 'Expected return of the car ' })
   expectedReturnDate: Date;
-
-  @ApiProperty({ description: 'Total rental price' })
-  total: number;
 }

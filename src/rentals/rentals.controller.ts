@@ -41,4 +41,9 @@ export class RentalsController {
   remove(@Param('id') id: string) {
     return this.rentalsService.remove(id);
   }
+
+  @Patch('devolution/:id')
+  devolution(@Param('id') id: string) {
+    return this.rentalsService.devolution(id);
+  }
 }

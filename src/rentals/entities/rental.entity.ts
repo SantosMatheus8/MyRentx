@@ -27,6 +27,12 @@ export class Rental {
   @Column()
   total: number;
 
+  @Column({ name: 'user_id' })
+  userId: string;
+
+  @Column({ name: 'car_id' })
+  carId: string;
+
   @ManyToOne(() => User, (user) => user.rental)
   @JoinColumn({ name: 'user_id' })
   user: User;
