@@ -1,4 +1,9 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Car } from 'src/cars/entities/car.entity';
 import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -37,9 +42,35 @@ export class RentalsService {
       );
     }
 
+    const activeCarRental = await this.rentalRepository
+      .createQueryBuilder('rental')
+      .leftJoinAndSelect('rental.car', 'car')
+      .where('rental.car_id LIKE :car_id', { car_id: `%${car.id}%` })
+      .andWhere('rental.end_date IS NULL')
+      .getOne();
+
+    if (activeCarRental) {
+      throw new BadRequestException(
+        `Não foi possível cadastrar o aluguel pois o carro informado já está alugado`,
+      );
+    }
+
+    const activeUserRental = await this.rentalRepository
+      .createQueryBuilder('rental')
+      .leftJoinAndSelect('rental.user', 'user')
+      .where('rental.user_id LIKE :user_id', { user_id: `%${user.id}%` })
+      .andWhere('rental.end_date IS NULL')
+      .getOne();
+
+    if (activeUserRental) {
+      throw new BadRequestException(
+        `Não foi possível cadastrar o aluguel pois o usuário informado já está com um carro alugado`,
+      );
+    }
+
     car.available = false;
 
-    this.carRepository.save(car);
+    await this.carRepository.save(car);
 
     const rental = this.rentalRepository.create({
       car,
