@@ -5,6 +5,7 @@ import { CarsModule } from './cars/cars.module';
 import { CategoriesModule } from './categories/categories.module';
 import { CarsImageModule } from './cars-image/cars-image.module';
 import { SpecificationsModule } from './specifications/specifications.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { SpecificationsModule } from './specifications/specifications.module';
     CategoriesModule,
     CarsImageModule,
     SpecificationsModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
