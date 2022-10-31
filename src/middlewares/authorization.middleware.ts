@@ -16,7 +16,7 @@ export class AuthorizationMiddleware implements NestMiddleware {
     const user = req.user;
 
     if (!user.isAdmin) {
-      throw new ForbiddenException();
+      throw new ForbiddenException('O usuário não é admin');
     }
 
     next();

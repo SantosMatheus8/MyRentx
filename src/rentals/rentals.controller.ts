@@ -10,7 +10,7 @@ import {
 import { RentalsService } from './rentals.service';
 import { CreateRentalDto } from './dto/create-rental.dto';
 import { UpdateRentalDto } from './dto/update-rental.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Rentals')
 @Controller('rentals')
@@ -22,6 +22,7 @@ export class RentalsController {
     return this.rentalsService.create(createRentalDto);
   }
 
+  @ApiBearerAuth('JWT-auth')
   @Get()
   findAll() {
     return this.rentalsService.findAll();

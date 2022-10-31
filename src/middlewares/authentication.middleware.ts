@@ -21,11 +21,14 @@ export class AuthenticationMiddleware implements NestMiddleware {
     const authorization = req.headers.authorization;
 
     if (!authorization) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('O usuário não está logado');
     }
 
+    const token = authorization.split(' ');
+
     try {
-      const user = verifyToken(authorization);
+      const user = verifyToken(token[1]);
+
       req.user = user;
     } catch (error) {
       throw new UnauthorizedException();

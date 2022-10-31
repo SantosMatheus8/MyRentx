@@ -8,7 +8,10 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  login(@Headers() email: string, senha: string) {
-    return this.authService.login(email, senha);
+  async login(
+    @Headers('email') email: string,
+    @Headers('password') password: string,
+  ) {
+    return this.authService.login(email, password);
   }
 }
