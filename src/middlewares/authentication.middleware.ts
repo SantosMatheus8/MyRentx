@@ -16,7 +16,7 @@ interface UserRequest extends Request {
 }
 
 @Injectable()
-export class AuthMiddleware implements NestMiddleware {
+export class AuthenticationMiddleware implements NestMiddleware {
   use(req: UserRequest, res: Response, next: NextFunction) {
     const authorization = req.headers.authorization;
 
