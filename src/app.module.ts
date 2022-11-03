@@ -7,6 +7,7 @@ import { CarsImageModule } from './cars-image/cars-image.module';
 import { SpecificationsModule } from './specifications/specifications.module';
 import { AuthModule } from './auth/auth.module';
 import { ImageUploadModule } from './image-upload/image-upload.module';
+import { SpecificationsCarsModule } from './specifications-cars/specifications-cars.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ImageUploadModule } from './image-upload/image-upload.module';
     SpecificationsModule,
     AuthModule,
     ImageUploadModule,
+    SpecificationsCarsModule,
   ],
   controllers: [],
   providers: [],

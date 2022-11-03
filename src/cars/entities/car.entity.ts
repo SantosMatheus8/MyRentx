@@ -1,14 +1,12 @@
 import { CarsImage } from 'src/cars-image/entities/cars-image.entity';
 import { Category } from 'src/categories/entities/category.entity';
 import { Rental } from 'src/rentals/entities/rental.entity';
-import { Specification } from 'src/specifications/entities/specification.entity';
+import { SpecificationsCar } from 'src/specifications-cars/entities/specifications-car.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -48,13 +46,11 @@ export class Car {
   @JoinColumn({ name: 'category_id' })
   category: Category;
 
-  @ManyToMany(() => Specification)
-  @JoinTable({
-    name: 'specifications_cars',
-    joinColumns: [{ name: 'car_id' }],
-    inverseJoinColumns: [{ name: 'specification_id' }],
-  })
-  specifications: Specification[];
+  @OneToMany(
+    () => SpecificationsCar,
+    (specificationsCar) => specificationsCar.car,
+  )
+  specificationsCar: SpecificationsCar[];
 
   @OneToMany(() => Rental, (rental) => rental.user)
   rental: Rental;

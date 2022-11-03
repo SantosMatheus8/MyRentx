@@ -5,6 +5,7 @@ import { CreateCategories1666206669959 } from './migrations/1666206669959-Create
 import { CreateCars1666209695110 } from './migrations/1666209695110-CreateCars';
 import { CreateCarsImage1666212001149 } from './migrations/1666212001149-CreateCarsImage';
 import { CreateRentals1666212215104 } from './migrations/1666212215104-CreateRentals';
+import { CreateSpecificationsCars1667430246688 } from './migrations/1667430246688-CreateSpecificationsCars';
 
 export const databaseProviders = [
   {
@@ -26,6 +27,7 @@ export const databaseProviders = [
           CreateCars1666209695110,
           CreateCarsImage1666212001149,
           CreateRentals1666212215104,
+          CreateSpecificationsCars1667430246688,
         ],
       });
 
@@ -50,5 +52,6 @@ export const dataSource = new DataSource({
     CreateCars1666209695110,
     CreateCarsImage1666212001149,
     CreateRentals1666212215104,
+    CreateSpecificationsCars1667430246688,
   ],
 });

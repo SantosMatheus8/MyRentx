@@ -9,6 +9,11 @@ export class CreateSpecificationsCars1667430246688
         name: 'specifications_cars',
         columns: [
           {
+            name: 'id',
+            type: 'varchar',
+            isPrimary: true,
+          },
+          {
             name: 'car_id',
             type: 'varchar',
           },
@@ -27,6 +32,7 @@ export class CreateSpecificationsCars1667430246688
             columnNames: ['car_id'],
             referencedTableName: 'cars',
             referencedColumnNames: ['id'],
+            onDelete: 'CASCADE',
           },
           {
             columnNames: ['specification_id'],
