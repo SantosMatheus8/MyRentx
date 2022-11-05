@@ -8,6 +8,7 @@ import { SpecificationsModule } from './specifications/specifications.module';
 import { AuthModule } from './auth/auth.module';
 import { ImageUploadModule } from './image-upload/image-upload.module';
 import { SpecificationsCarsModule } from './specifications-cars/specifications-cars.module';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { SpecificationsCarsModule } from './specifications-cars/specifications-c
     AuthModule,
     ImageUploadModule,
     SpecificationsCarsModule,
+    EmailModule,
   ],
   controllers: [],
   providers: [],
