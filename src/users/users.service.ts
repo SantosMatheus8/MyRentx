@@ -1,7 +1,9 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { verifyToken } from 'src/helpers/Token';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdatePasswordUserDto } from './dto/updatePassword-user.dto';
 import { User } from './entities/user.entity';
 
 @Injectable()
@@ -58,5 +60,27 @@ export class UsersService {
     const user = await this.findOne(id);
 
     return this.userRepository.remove(user);
+  }
+
+  async updatePassword(updatePasswordUserDto: UpdatePasswordUserDto) {
+    const { verificationCode, password } = updatePasswordUserDto;
+
+    const token = verifyToken(verificationCode);
+
+    const user = await this.findOne(token.id);
+
+    user.password = password;
+
+    const updatedUser = await this.userRepository.save(user);
+
+    return {
+      name: updatedUser.name,
+      email: updatedUser.email,
+      avatar: updatedUser.avatar,
+      driverLicense: updatedUser.driverLicense,
+      isAdmin: updatedUser.isAdmin,
+      createdAt: updatedUser.createdAt,
+      updatedAt: new Date(),
+    };
   }
 }

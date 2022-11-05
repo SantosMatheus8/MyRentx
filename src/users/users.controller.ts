@@ -11,6 +11,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { UpdatePasswordUserDto } from './dto/updatePassword-user.dto';
 
 @ApiTags('Users')
 @Controller('users')
@@ -40,5 +41,10 @@ export class UsersController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);
+  }
+
+  @Patch('password/update')
+  updatePassword(@Body() updatePasswordUserDto: UpdatePasswordUserDto) {
+    return this.usersService.updatePassword(updatePasswordUserDto);
   }
 }
