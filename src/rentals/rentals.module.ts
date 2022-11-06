@@ -14,6 +14,10 @@ export class RentalsModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthenticationMiddleware)
-      .forRoutes({ path: 'rentals', method: RequestMethod.GET });
+      .forRoutes(
+        { path: 'rentals', method: RequestMethod.GET },
+        { path: 'rentals', method: RequestMethod.POST },
+        { path: 'devolution/:id', method: RequestMethod.PATCH },
+      );
   }
 }

@@ -10,7 +10,7 @@ import {
 import { SpecificationsCarsService } from './specifications-cars.service';
 import { CreateSpecificationsCarDto } from './dto/create-specifications-car.dto';
 import { UpdateSpecificationsCarDto } from './dto/update-specifications-car.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Specifications-Cars')
 @Controller('specifications-cars')
@@ -19,6 +19,7 @@ export class SpecificationsCarsController {
     private readonly specificationsCarsService: SpecificationsCarsService,
   ) {}
 
+  @ApiBearerAuth('JWT-auth')
   @Post()
   create(@Body() createSpecificationsCarDto: CreateSpecificationsCarDto) {
     return this.specificationsCarsService.create(createSpecificationsCarDto);

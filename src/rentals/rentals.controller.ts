@@ -17,6 +17,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 export class RentalsController {
   constructor(private readonly rentalsService: RentalsService) {}
 
+  @ApiBearerAuth('JWT-auth')
   @Post()
   create(@Body() createRentalDto: CreateRentalDto) {
     return this.rentalsService.create(createRentalDto);
@@ -43,6 +44,7 @@ export class RentalsController {
     return this.rentalsService.remove(id);
   }
 
+  @ApiBearerAuth('JWT-auth')
   @Patch('devolution/:id')
   devolution(@Param('id') id: string) {
     return this.rentalsService.devolution(id);

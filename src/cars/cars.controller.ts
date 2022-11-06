@@ -11,13 +11,14 @@ import {
 import { CarsService } from './cars.service';
 import { CreateCarDto } from './dto/create-car.dto';
 import { UpdateCarDto } from './dto/update-car.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Cars')
 @Controller('cars')
 export class CarsController {
   constructor(private readonly carsService: CarsService) {}
 
+  @ApiBearerAuth('JWT-auth')
   @Post()
   create(@Body() createCarDto: CreateCarDto) {
     return this.carsService.create(createCarDto);
