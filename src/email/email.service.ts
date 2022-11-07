@@ -1,6 +1,6 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { EmailClient } from 'src/clients/EmailClient';
-import { generateToken } from 'src/helpers/Token';
+import { generateTokenWithTimer } from 'src/helpers/Token';
 import { User } from 'src/users/entities/user.entity';
 import { Repository } from 'typeorm';
 
@@ -18,7 +18,10 @@ export class EmailService {
       throw new NotFoundException(`Usuário não encontrado`);
     }
 
-    const token = generateToken({ id: user.id, isAdmin: user.isAdmin });
+    const token = generateTokenWithTimer({
+      id: user.id,
+      isAdmin: user.isAdmin,
+    });
 
     const message = `
     <h1>Redefinição de senha!</h1>
