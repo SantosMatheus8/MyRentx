@@ -1,4 +1,9 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Car } from 'src/cars/entities/car.entity';
 import { Specification } from 'src/specifications/entities/specification.entity';
 import { Repository } from 'typeorm';
@@ -35,6 +40,27 @@ export class SpecificationsCarsService {
     if (!car) {
       throw new NotFoundException(
         `Não foi encontrado um carro com o ID: ${createSpecificationsCarDto.car_id}`,
+      );
+    }
+
+    const specificationCarAlreadyExists =
+      await this.specificationsCarsRepository
+        .createQueryBuilder('specifications_cars')
+        .leftJoinAndSelect('specifications_cars.car', 'car')
+        .where('specifications_cars.car_id LIKE :car_id', {
+          car_id: `%${car.id}%`,
+        })
+        .andWhere(
+          'specifications_cars.specification_id LIKE :specification_id',
+          {
+            specification_id: `%${specification.id}%`,
+          },
+        )
+        .getOne();
+
+    if (specificationCarAlreadyExists) {
+      throw new BadRequestException(
+        `Não é possível cadastrar uma especificação já existente para o mesmo carro`,
       );
     }
 
