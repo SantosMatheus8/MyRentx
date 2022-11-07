@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Headers,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -46,5 +47,13 @@ export class UsersController {
   @Patch('password/update')
   updatePassword(@Body() updatePasswordUserDto: UpdatePasswordUserDto) {
     return this.usersService.updatePassword(updatePasswordUserDto);
+  }
+
+  @Post('login')
+  async login(
+    @Headers('email') email: string,
+    @Headers('password') password: string,
+  ) {
+    return this.usersService.login(email, password);
   }
 }

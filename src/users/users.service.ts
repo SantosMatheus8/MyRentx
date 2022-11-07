@@ -1,5 +1,10 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { verifyToken } from 'src/helpers/Token';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { generateToken, verifyToken } from 'src/helpers/Token';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -82,5 +87,19 @@ export class UsersService {
       createdAt: updatedUser.createdAt,
       updatedAt: new Date(),
     };
+  }
+
+  async login(email: string, password: string) {
+    const user = await this.userRepository.findOne({ where: { email } });
+
+    if (!user) {
+      throw new NotFoundException('Email informado não foi encontrado');
+    }
+
+    if (user.password !== password) {
+      throw new BadRequestException('Email ou senha inválidos');
+    }
+
+    return generateToken({ id: user.id, isAdmin: user.isAdmin });
   }
 }
