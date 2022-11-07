@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { RentalsService } from './rentals.service';
 import { CreateRentalDto } from './dto/create-rental.dto';
@@ -25,8 +26,8 @@ export class RentalsController {
 
   @ApiBearerAuth('JWT-auth')
   @Get()
-  findAll() {
-    return this.rentalsService.findAll();
+  findAll(@Query('userId') userId?: string) {
+    return this.rentalsService.findAll(userId);
   }
 
   @Get(':id')

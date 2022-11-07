@@ -38,7 +38,7 @@ export class RentalsService {
 
     if (!user) {
       throw new NotFoundException(
-        `Não foi encontrado um carro com o ID informado`,
+        `Não foi encontrado um usuário com o ID informado`,
       );
     }
 
@@ -84,7 +84,15 @@ export class RentalsService {
     return this.rentalRepository.save(rental);
   }
 
-  async findAll() {
+  async findAll(userId: string) {
+    if (userId) {
+      const rentalsQuery = this.rentalRepository
+        .createQueryBuilder('r')
+        .where('user_id = :userId', { userId });
+
+      return rentalsQuery.getMany();
+    }
+
     return this.rentalRepository.find();
   }
 
