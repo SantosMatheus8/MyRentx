@@ -4,6 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { passwordHash } from 'src/helpers/PasswordHash';
 import { generateToken, verifyToken } from 'src/helpers/Token';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -19,6 +20,8 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto): Promise<Partial<User>> {
     const user = this.userRepository.create({ ...createUserDto });
+
+    user.password = passwordHash(createUserDto.password);
 
     const newUser = await this.userRepository.save(user);
 
@@ -58,6 +61,8 @@ export class UsersService {
       );
     }
 
+    user.password = passwordHash(updateUserDto.password);
+
     return this.userRepository.save(user);
   }
 
@@ -76,7 +81,7 @@ export class UsersService {
 
     const user = await this.findOne(token.id);
 
-    user.password = password;
+    user.password = passwordHash(password);
 
     const updatedUser = await this.userRepository.save(user);
 
@@ -98,7 +103,7 @@ export class UsersService {
       throw new NotFoundException('Email informado não foi encontrado');
     }
 
-    if (user.password !== password) {
+    if (user.password !== passwordHash(password)) {
       throw new BadRequestException('Email ou senha inválidos');
     }
 
