@@ -11,7 +11,9 @@ export class SpecificationsService {
     private specificationRepository: Repository<Specification>,
   ) {}
 
-  async create(createSpecificationDto: CreateSpecificationDto) {
+  async create(
+    createSpecificationDto: CreateSpecificationDto,
+  ): Promise<Specification> {
     const specification = this.specificationRepository.create(
       createSpecificationDto,
     );
@@ -19,11 +21,11 @@ export class SpecificationsService {
     return this.specificationRepository.save(specification);
   }
 
-  async findAll() {
+  async findAll(): Promise<Specification[]> {
     return this.specificationRepository.find();
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<Specification> {
     const specification = await this.specificationRepository.findOne({
       where: { id },
     });
@@ -37,7 +39,10 @@ export class SpecificationsService {
     return specification;
   }
 
-  async update(id: string, updateSpecificationDto: UpdateSpecificationDto) {
+  async update(
+    id: string,
+    updateSpecificationDto: UpdateSpecificationDto,
+  ): Promise<Specification> {
     const specification = await this.specificationRepository.preload({
       id,
       ...updateSpecificationDto,
@@ -52,7 +57,7 @@ export class SpecificationsService {
     return this.specificationRepository.save(specification);
   }
 
-  async remove(id: string) {
+  async remove(id: string): Promise<Specification> {
     const specification = await this.findOne(id);
 
     return this.specificationRepository.remove(specification);

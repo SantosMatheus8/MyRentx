@@ -17,7 +17,7 @@ export class UsersService {
     @Inject('UserRepository') private userRepository: Repository<User>,
   ) {}
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto): Promise<Partial<User>> {
     const user = this.userRepository.create({ ...createUserDto });
 
     const newUser = await this.userRepository.save(user);
@@ -33,11 +33,11 @@ export class UsersService {
     };
   }
 
-  async findAll() {
+  async findAll(): Promise<User[]> {
     return this.userRepository.find();
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<User> {
     const user = await this.userRepository.findOne({ where: { id } });
 
     if (!user) {
@@ -49,7 +49,7 @@ export class UsersService {
     return user;
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.userRepository.preload({ id, ...updateUserDto });
 
     if (!user) {
@@ -61,13 +61,15 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
-  async remove(id: string) {
+  async remove(id: string): Promise<User> {
     const user = await this.findOne(id);
 
     return this.userRepository.remove(user);
   }
 
-  async updatePassword(updatePasswordUserDto: UpdatePasswordUserDto) {
+  async updatePassword(
+    updatePasswordUserDto: UpdatePasswordUserDto,
+  ): Promise<Partial<User>> {
     const { verificationCode, password } = updatePasswordUserDto;
 
     const token = verifyToken(verificationCode);

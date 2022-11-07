@@ -22,7 +22,9 @@ export class SpecificationsCarsService {
     private carRepository: Repository<Car>,
   ) {}
 
-  async create(createSpecificationsCarDto: CreateSpecificationsCarDto) {
+  async create(
+    createSpecificationsCarDto: CreateSpecificationsCarDto,
+  ): Promise<SpecificationsCar> {
     const specification = await this.specificationRepository.findOne({
       where: { id: createSpecificationsCarDto.specification_id },
     });
@@ -72,11 +74,11 @@ export class SpecificationsCarsService {
     return this.specificationsCarsRepository.save(specificationCar);
   }
 
-  async findAll() {
+  async findAll(): Promise<SpecificationsCar[]> {
     return this.specificationsCarsRepository.find();
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<SpecificationsCar> {
     const specificationCar = await this.specificationsCarsRepository.findOne({
       where: { id },
     });
@@ -93,7 +95,7 @@ export class SpecificationsCarsService {
   async update(
     id: string,
     updateSpecificationsCarDto: UpdateSpecificationsCarDto,
-  ) {
+  ): Promise<SpecificationsCar> {
     const specificationCar = await this.specificationsCarsRepository.preload({
       id,
       ...updateSpecificationsCarDto,
@@ -108,7 +110,7 @@ export class SpecificationsCarsService {
     return this.specificationsCarsRepository.save(specificationCar);
   }
 
-  async remove(id: string) {
+  async remove(id: string): Promise<SpecificationsCar> {
     const specificationCar = await this.findOne(id);
 
     return specificationCar;

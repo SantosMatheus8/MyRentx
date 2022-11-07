@@ -19,7 +19,7 @@ export class CarsService {
     private categoryRepository: Repository<Category>,
   ) {}
 
-  async create(createCarDto: CreateCarDto) {
+  async create(createCarDto: CreateCarDto): Promise<Car> {
     const category = await this.categoryRepository.findOne({
       where: { id: createCarDto.categoryId },
     });
@@ -51,7 +51,11 @@ export class CarsService {
     return this.carRepository.save(car);
   }
 
-  async findAll(brand?: string, categoryId?: string, name?: string) {
+  async findAll(
+    brand?: string,
+    categoryId?: string,
+    name?: string,
+  ): Promise<Car[]> {
     const carsQuery = this.carRepository
       .createQueryBuilder('c')
       .where('available = :available', { available: true });
@@ -73,7 +77,7 @@ export class CarsService {
     return cars;
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<Car> {
     const car = await this.carRepository.findOne({ where: { id } });
 
     if (!car) {
@@ -85,7 +89,7 @@ export class CarsService {
     return car;
   }
 
-  async update(id: string, updateCarDto: UpdateCarDto) {
+  async update(id: string, updateCarDto: UpdateCarDto): Promise<Car> {
     const car = await this.carRepository.preload({ id, ...updateCarDto });
 
     if (!car) {
@@ -97,7 +101,7 @@ export class CarsService {
     return this.carRepository.save(car);
   }
 
-  async remove(id: string) {
+  async remove(id: string): Promise<Car> {
     const car = await this.findOne(id);
 
     return this.carRepository.remove(car);

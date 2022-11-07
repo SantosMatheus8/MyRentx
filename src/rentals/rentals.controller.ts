@@ -12,6 +12,7 @@ import { RentalsService } from './rentals.service';
 import { CreateRentalDto } from './dto/create-rental.dto';
 import { UpdateRentalDto } from './dto/update-rental.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Rental } from './entities/rental.entity';
 
 @ApiTags('Rentals')
 @Controller('rentals')
@@ -20,34 +21,37 @@ export class RentalsController {
 
   @ApiBearerAuth('JWT-auth')
   @Post()
-  create(@Body() createRentalDto: CreateRentalDto) {
+  create(@Body() createRentalDto: CreateRentalDto): Promise<Rental> {
     return this.rentalsService.create(createRentalDto);
   }
 
   @ApiBearerAuth('JWT-auth')
   @Get()
-  findAll(@Query('userId') userId?: string) {
+  findAll(@Query('userId') userId?: string): Promise<Rental[]> {
     return this.rentalsService.findAll(userId);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string): Promise<Rental> {
     return this.rentalsService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRentalDto: UpdateRentalDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateRentalDto: UpdateRentalDto,
+  ): Promise<Rental> {
     return this.rentalsService.update(id, updateRentalDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: string): Promise<Rental> {
     return this.rentalsService.remove(id);
   }
 
   @ApiBearerAuth('JWT-auth')
   @Patch('devolution/:id')
-  devolution(@Param('id') id: string) {
+  devolution(@Param('id') id: string): Promise<Rental> {
     return this.rentalsService.devolution(id);
   }
 }

@@ -21,7 +21,7 @@ export class RentalsService {
     @Inject('UserRepository') private userRepository: Repository<User>,
   ) {}
 
-  async create(createRentalDto: CreateRentalDto) {
+  async create(createRentalDto: CreateRentalDto): Promise<Rental> {
     const car = await this.carRepository.findOne({
       where: { id: createRentalDto.carId },
     });
@@ -84,7 +84,7 @@ export class RentalsService {
     return this.rentalRepository.save(rental);
   }
 
-  async findAll(userId: string) {
+  async findAll(userId: string): Promise<Rental[]> {
     if (userId) {
       const rentalsQuery = this.rentalRepository
         .createQueryBuilder('r')
@@ -96,7 +96,7 @@ export class RentalsService {
     return this.rentalRepository.find();
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<Rental> {
     const rental = await this.rentalRepository.findOne({ where: { id } });
 
     if (!rental) {
@@ -108,7 +108,7 @@ export class RentalsService {
     return rental;
   }
 
-  async update(id: string, updateRentalDto: UpdateRentalDto) {
+  async update(id: string, updateRentalDto: UpdateRentalDto): Promise<Rental> {
     const rental = await this.rentalRepository.preload({
       id,
       ...updateRentalDto,
@@ -123,13 +123,13 @@ export class RentalsService {
     return this.rentalRepository.save(rental);
   }
 
-  async remove(id: string) {
+  async remove(id: string): Promise<Rental> {
     const rental = await this.findOne(id);
 
     return this.rentalRepository.remove(rental);
   }
 
-  async devolution(id: string) {
+  async devolution(id: string): Promise<Rental> {
     const rental = await this.findOne(id);
 
     const car = await this.carRepository.findOne({

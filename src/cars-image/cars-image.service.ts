@@ -14,7 +14,7 @@ export class CarsImageService {
     private carRepository: Repository<Car>,
   ) {}
 
-  async create(createCarsImageDto: CreateCarsImageDto) {
+  async create(createCarsImageDto: CreateCarsImageDto): Promise<CarsImage> {
     const car = await this.carRepository.findOne({
       where: { id: createCarsImageDto.carId },
     });
@@ -34,11 +34,11 @@ export class CarsImageService {
     return this.carsImageRepository.save(carImage);
   }
 
-  async findAll() {
+  async findAll(): Promise<CarsImage[]> {
     return this.carsImageRepository.find();
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<CarsImage> {
     const carImage = await this.carsImageRepository.findOne({ where: { id } });
 
     if (!carImage) {
@@ -50,7 +50,10 @@ export class CarsImageService {
     return carImage;
   }
 
-  async update(id: string, updateCarsImageDto: UpdateCarsImageDto) {
+  async update(
+    id: string,
+    updateCarsImageDto: UpdateCarsImageDto,
+  ): Promise<CarsImage> {
     const carImage = await this.carsImageRepository.preload({
       id,
       ...updateCarsImageDto,
@@ -65,7 +68,7 @@ export class CarsImageService {
     return this.carsImageRepository.save(carImage);
   }
 
-  async remove(id: string) {
+  async remove(id: string): Promise<CarsImage> {
     const carImage = await this.findOne(id);
 
     return this.carsImageRepository.remove(carImage);
