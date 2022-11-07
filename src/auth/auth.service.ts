@@ -17,12 +17,12 @@ export class AuthService {
   async login(email: string, password: string) {
     const user = await this.userRepository.findOne({ where: { email } });
 
-    if (user.password !== password) {
-      throw new BadRequestException('Email ou senha inválidos');
-    }
-
     if (!user) {
       throw new NotFoundException('Email informado não foi encontrado');
+    }
+
+    if (user.password !== password) {
+      throw new BadRequestException('Email ou senha inválidos');
     }
 
     return generateToken({ id: user.id, isAdmin: user.isAdmin });
