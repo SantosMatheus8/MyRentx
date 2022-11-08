@@ -26,6 +26,7 @@ export class UsersService {
     const newUser = await this.userRepository.save(user);
 
     return {
+      id: newUser.id,
       name: newUser.name,
       email: newUser.email,
       avatar: newUser.avatar,
@@ -40,7 +41,7 @@ export class UsersService {
     return this.userRepository.find();
   }
 
-  async findOne(id: string): Promise<User> {
+  async findOne(id: string): Promise<Partial<User>> {
     const user = await this.userRepository.findOne({ where: { id } });
 
     if (!user) {
@@ -49,10 +50,22 @@ export class UsersService {
       );
     }
 
-    return user;
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      avatar: user.avatar,
+      driverLicense: user.driverLicense,
+      isAdmin: user.isAdmin,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+  async update(
+    id: string,
+    updateUserDto: UpdateUserDto,
+  ): Promise<Partial<User>> {
     const user = await this.userRepository.preload({ id, ...updateUserDto });
 
     if (!user) {
@@ -63,11 +76,28 @@ export class UsersService {
 
     user.password = passwordHash(updateUserDto.password);
 
-    return this.userRepository.save(user);
+    const updatedUser = await this.userRepository.save(user);
+
+    return {
+      id: updatedUser.id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      avatar: updatedUser.avatar,
+      driverLicense: updatedUser.driverLicense,
+      isAdmin: updatedUser.isAdmin,
+      createdAt: updatedUser.createdAt,
+      updatedAt: updatedUser.updatedAt,
+    };
   }
 
   async remove(id: string): Promise<User> {
-    const user = await this.findOne(id);
+    const user = await this.userRepository.findOne({ where: { id } });
+
+    if (!user) {
+      throw new NotFoundException(
+        `Não foi encontrado um usuário com o ID : ${id}`,
+      );
+    }
 
     return this.userRepository.remove(user);
   }
@@ -86,6 +116,7 @@ export class UsersService {
     const updatedUser = await this.userRepository.save(user);
 
     return {
+      id: updatedUser.id,
       name: updatedUser.name,
       email: updatedUser.email,
       avatar: updatedUser.avatar,

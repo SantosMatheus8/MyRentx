@@ -6,6 +6,9 @@ import { CreateCars1666209695110 } from './migrations/1666209695110-CreateCars';
 import { CreateCarsImage1666212001149 } from './migrations/1666212001149-CreateCarsImage';
 import { CreateRentals1666212215104 } from './migrations/1666212215104-CreateRentals';
 import { CreateSpecificationsCars1667430246688 } from './migrations/1667430246688-CreateSpecificationsCars';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 export const databaseProviders = [
   {
