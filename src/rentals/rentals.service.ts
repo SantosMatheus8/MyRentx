@@ -26,15 +26,15 @@ export class RentalsService {
       where: { id: createRentalDto.carId },
     });
 
-    const user = await this.userRepository.findOne({
-      where: { id: createRentalDto.userId },
-    });
-
     if (!car) {
       throw new NotFoundException(
         `Não foi encontrado um carro com o ID informado`,
       );
     }
+
+    const user = await this.userRepository.findOne({
+      where: { id: createRentalDto.userId },
+    });
 
     if (!user) {
       throw new NotFoundException(
@@ -70,8 +70,6 @@ export class RentalsService {
 
     car.available = false;
 
-    await this.carRepository.save(car);
-
     const rental = this.rentalRepository.create({
       car,
       user,
@@ -80,6 +78,8 @@ export class RentalsService {
       total: null,
       expectedReturnDate: createRentalDto.expectedReturnDate,
     });
+
+    await this.carRepository.save(car);
 
     return this.rentalRepository.save(rental);
   }
@@ -133,12 +133,16 @@ export class RentalsService {
     const rental = await this.findOne(id);
 
     const car = await this.carRepository.findOne({
-      where: { id: String(rental.carId) },
+      where: { id: rental.carId },
     });
 
-    rental.endDate = new Date();
+    if (!car) {
+      throw new NotFoundException(
+        `Não foi encontrado um carro com o ID informado`,
+      );
+    }
 
-    car.available = true;
+    rental.endDate = new Date();
 
     const rentedDays =
       (rental.expectedReturnDate.getTime() - rental.startDate.getTime()) /
@@ -154,12 +158,10 @@ export class RentalsService {
       rental.total += Math.trunc(daysWithFine) * car.fineAmount;
     }
 
-    const returnedCar = await this.carRepository.preload({
-      id,
-      ...car,
-    });
+    car.available = true;
 
-    await this.carRepository.save(returnedCar);
+    await this.carRepository.save(car);
+
     await this.rentalRepository.save(rental);
 
     return rental;
