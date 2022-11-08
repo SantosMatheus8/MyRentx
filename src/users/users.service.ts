@@ -19,6 +19,24 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<Partial<User>> {
+    const existingEmail = this.userRepository.findOne({
+      where: { email: createUserDto.email },
+    });
+
+    if (existingEmail) {
+      throw new BadRequestException(`O email informado já está cadastrado`);
+    }
+
+    const existingDriverLicense = this.userRepository.findOne({
+      where: { driverLicense: createUserDto.driverLicense },
+    });
+
+    if (existingDriverLicense) {
+      throw new BadRequestException(
+        `A licença de motorista informada já está cadastrada`,
+      );
+    }
+
     const user = this.userRepository.create({ ...createUserDto });
 
     user.password = passwordHash(createUserDto.password);
