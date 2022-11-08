@@ -15,6 +15,10 @@ export class CarsImageModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthenticationMiddleware, AuthorizationMiddleware)
-      .forRoutes({ path: 'cars-image', method: RequestMethod.POST });
+      .forRoutes(
+        { path: 'cars-image', method: RequestMethod.POST },
+        { path: 'cars-image/:id', method: RequestMethod.PATCH },
+        { path: 'cars-image/:id', method: RequestMethod.DELETE },
+      );
   }
 }

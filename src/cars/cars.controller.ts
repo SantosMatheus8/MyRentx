@@ -53,6 +53,7 @@ export class CarsController {
     return this.carsService.findOne(id);
   }
 
+  @ApiBearerAuth('JWT-auth')
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -61,6 +62,7 @@ export class CarsController {
     return this.carsService.update(id, updateCarDto);
   }
 
+  @ApiBearerAuth('JWT-auth')
   @Delete(':id')
   remove(@Param('id') id: string): Promise<Car> {
     return this.carsService.remove(id);

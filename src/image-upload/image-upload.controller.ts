@@ -6,7 +6,7 @@ import {
   ParseFilePipe,
   FileTypeValidator,
 } from '@nestjs/common';
-import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ImageUploadService } from './image-upload.service';
 
@@ -15,6 +15,7 @@ import { ImageUploadService } from './image-upload.service';
 export class ImageUploadController {
   constructor(private readonly imageUploadService: ImageUploadService) {}
 
+  @ApiBearerAuth('JWT-auth')
   @Post('upload')
   @ApiConsumes('multipart/form-data')
   @ApiBody({

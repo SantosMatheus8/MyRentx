@@ -40,6 +40,7 @@ export class RentalsController {
     return this.rentalsService.findOne(id);
   }
 
+  @ApiBearerAuth('JWT-auth')
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -48,6 +49,7 @@ export class RentalsController {
     return this.rentalsService.update(id, updateRentalDto);
   }
 
+  @ApiBearerAuth('JWT-auth')
   @Delete(':id')
   remove(@Param('id') id: string): Promise<Rental> {
     return this.rentalsService.remove(id);

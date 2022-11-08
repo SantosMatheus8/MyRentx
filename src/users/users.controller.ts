@@ -31,11 +31,13 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  @ApiBearerAuth('JWT-auth')
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Partial<User>> {
     return this.usersService.findOne(id);
   }
 
+  @ApiBearerAuth('JWT-auth')
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -44,6 +46,7 @@ export class UsersController {
     return this.usersService.update(id, updateUserDto);
   }
 
+  @ApiBearerAuth('JWT-auth')
   @Delete(':id')
   remove(@Param('id') id: string): Promise<User> {
     return this.usersService.remove(id);

@@ -15,6 +15,10 @@ export class SpecificationsCarsModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthenticationMiddleware, AuthorizationMiddleware)
-      .forRoutes({ path: 'specifications-cars', method: RequestMethod.POST });
+      .forRoutes(
+        { path: 'specifications-cars', method: RequestMethod.POST },
+        { path: 'specifications-cars/:id', method: RequestMethod.PATCH },
+        { path: 'specifications-cars/:id', method: RequestMethod.DELETE },
+      );
   }
 }

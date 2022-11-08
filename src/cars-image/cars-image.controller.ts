@@ -34,6 +34,7 @@ export class CarsImageController {
     return this.carsImageService.findOne(id);
   }
 
+  @ApiBearerAuth('JWT-auth')
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -42,6 +43,7 @@ export class CarsImageController {
     return this.carsImageService.update(id, updateCarsImageDto);
   }
 
+  @ApiBearerAuth('JWT-auth')
   @Delete(':id')
   remove(@Param('id') id: string): Promise<CarsImage> {
     return this.carsImageService.remove(id);

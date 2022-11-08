@@ -15,6 +15,12 @@ export class UsersModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthenticationMiddleware, AuthorizationMiddleware)
-      .forRoutes({ path: 'users', method: RequestMethod.GET });
+      .forRoutes({ path: 'users', method: RequestMethod.GET })
+      .apply(AuthenticationMiddleware)
+      .forRoutes(
+        { path: 'users/:id', method: RequestMethod.GET },
+        { path: 'users/:id', method: RequestMethod.PATCH },
+        { path: 'users/:id', method: RequestMethod.DELETE },
+      );
   }
 }

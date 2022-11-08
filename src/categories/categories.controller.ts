@@ -10,7 +10,7 @@ import {
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Category } from './entities/category.entity';
 
 @ApiTags('Categories')
@@ -18,6 +18,7 @@ import { Category } from './entities/category.entity';
 export class CategoriesController {
   constructor(private readonly categoriesService: CategoriesService) {}
 
+  @ApiBearerAuth('JWT-auth')
   @Post()
   create(@Body() createCategoryDto: CreateCategoryDto): Promise<Category> {
     return this.categoriesService.create(createCategoryDto);
@@ -33,6 +34,7 @@ export class CategoriesController {
     return this.categoriesService.findOne(id);
   }
 
+  @ApiBearerAuth('JWT-auth')
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -41,6 +43,7 @@ export class CategoriesController {
     return this.categoriesService.update(id, updateCategoryDto);
   }
 
+  @ApiBearerAuth('JWT-auth')
   @Delete(':id')
   remove(@Param('id') id: string): Promise<Category> {
     return this.categoriesService.remove(id);
