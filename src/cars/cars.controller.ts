@@ -11,7 +11,7 @@ import {
 import { CarsService } from './cars.service';
 import { CreateCarDto } from './dto/create-car.dto';
 import { UpdateCarDto } from './dto/update-car.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Car } from './entities/car.entity';
 
 @ApiTags('Cars')
@@ -25,6 +25,18 @@ export class CarsController {
     return this.carsService.create(createCarDto);
   }
 
+  @ApiQuery({
+    name: 'brand',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'name',
+    required: false,
+  })
+  @ApiQuery({
+    name: 'categoryId',
+    required: false,
+  })
   @Get()
   findAll(
     @Query('brand') brand?: string,
