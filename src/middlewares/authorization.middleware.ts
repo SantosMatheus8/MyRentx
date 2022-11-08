@@ -1,14 +1,6 @@
 import { ForbiddenException, Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Response } from 'express';
-
-interface UserTokenDTO {
-  id: string;
-  isAdmin: boolean;
-}
-
-interface UserRequest extends Request {
-  user: UserTokenDTO;
-}
+import { UserRequest } from 'src/@types/middlewares/auth';
 
 @Injectable()
 export class AuthorizationMiddleware implements NestMiddleware {

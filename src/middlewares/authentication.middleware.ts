@@ -3,17 +3,9 @@ import {
   NestMiddleware,
   UnauthorizedException,
 } from '@nestjs/common';
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
+import { UserRequest } from 'src/@types/middlewares/auth';
 import { verifyToken } from 'src/helpers/Token';
-
-interface UserTokenDTO {
-  id: string;
-  isAdmin: boolean;
-}
-
-interface UserRequest extends Request {
-  user: UserTokenDTO;
-}
 
 @Injectable()
 export class AuthenticationMiddleware implements NestMiddleware {

@@ -1,9 +1,5 @@
 import { sign, verify } from 'jsonwebtoken';
-
-interface UserTokenDTO {
-  id: string;
-  isAdmin: boolean;
-}
+import { UserTokenDTO } from 'src/@types/middlewares/auth';
 
 export const generateToken = ({ id, isAdmin }) => {
   const token = sign({ id, isAdmin }, process.env.AUTH_SECRET);
