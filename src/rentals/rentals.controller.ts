@@ -11,7 +11,7 @@ import {
 import { RentalsService } from './rentals.service';
 import { CreateRentalDto } from './dto/create-rental.dto';
 import { UpdateRentalDto } from './dto/update-rental.dto';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { Rental } from './entities/rental.entity';
 
 @ApiTags('Rentals')
@@ -26,6 +26,10 @@ export class RentalsController {
   }
 
   @ApiBearerAuth('JWT-auth')
+  @ApiQuery({
+    name: 'userId',
+    required: false,
+  })
   @Get()
   findAll(@Query('userId') userId?: string): Promise<Rental[]> {
     return this.rentalsService.findAll(userId);
