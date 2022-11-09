@@ -4,8 +4,8 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { passwordHash } from 'src/helpers/PasswordHash';
-import { generateToken, verifyToken } from 'src/helpers/Token';
+import { passwordHash } from '../helpers/PasswordHash';
+import { generateToken, verifyToken } from '../helpers/Token';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
