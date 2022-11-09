@@ -101,12 +101,12 @@ describe('CategoriesService', () => {
     it('Must update a specific category', async () => {
       jest.spyOn(repository, 'save').mockResolvedValueOnce(updatedCategory);
 
-      const medico = await service.update(
+      const category = await service.update(
         '1ca415c6-32be-488c-b7bf-12b8649c99bd',
         { name: 'Sport' },
       );
 
-      expect(medico).toEqual(updatedCategory);
+      expect(category).toEqual(updatedCategory);
       expect(repository.preload).toHaveBeenCalledTimes(1);
       expect(repository.save).toHaveBeenCalledTimes(1);
     });
