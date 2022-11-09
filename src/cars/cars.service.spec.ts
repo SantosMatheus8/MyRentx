@@ -82,7 +82,7 @@ describe('CarsService', () => {
     it('A car must be created', async () => {
       jest.spyOn(repository, 'findOne').mockResolvedValueOnce(null);
 
-      const category = await service.create({
+      const car = await service.create({
         name: 'HR-V',
         description: 'Car Description',
         dailyRate: 80,
@@ -92,7 +92,7 @@ describe('CarsService', () => {
         categoryId: 'c3d6b2a2-0c41-45da-ad0f-c5b20318c647',
       });
 
-      expect(category).toEqual(carList[0]);
+      expect(car).toEqual(carList[0]);
       expect(repository.create).toHaveBeenCalledTimes(1);
       expect(repository.save).toHaveBeenCalledTimes(1);
     });

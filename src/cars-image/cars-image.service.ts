@@ -21,7 +21,7 @@ export class CarsImageService {
 
     if (!car) {
       throw new NotFoundException(
-        `Não foi encontrado um carro com o ID informado}`,
+        `Não foi encontrado um carro com o ID informado`,
       );
     }
 
