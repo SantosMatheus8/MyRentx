@@ -1,5 +1,5 @@
-import { Car } from 'src/cars/entities/car.entity';
-import { Specification } from 'src/specifications/entities/specification.entity';
+import { Car } from '../cars/entities/car.entity';
+import { Specification } from '../specifications/entities/specification.entity';
 import { SpecificationsCar } from './entities/specifications-car.entity';
 import { DataSource } from 'typeorm';
 
