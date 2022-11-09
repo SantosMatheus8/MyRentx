@@ -19,7 +19,7 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<Partial<User>> {
-    const existingEmail = this.userRepository.findOne({
+    const existingEmail = await this.userRepository.findOne({
       where: { email: createUserDto.email },
     });
 
@@ -27,7 +27,7 @@ export class UsersService {
       throw new BadRequestException(`O email informado já está cadastrado`);
     }
 
-    const existingDriverLicense = this.userRepository.findOne({
+    const existingDriverLicense = await this.userRepository.findOne({
       where: { driverLicense: createUserDto.driverLicense },
     });
 
@@ -92,7 +92,9 @@ export class UsersService {
       );
     }
 
-    user.password = passwordHash(updateUserDto.password);
+    if (updateUserDto.password) {
+      user.password = passwordHash(updateUserDto.password);
+    }
 
     const updatedUser = await this.userRepository.save(user);
 
