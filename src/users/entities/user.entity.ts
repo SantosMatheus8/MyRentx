@@ -1,4 +1,4 @@
-import { Rental } from 'src/rentals/entities/rental.entity';
+import { Rental } from '../../rentals/entities/rental.entity';
 import {
   Column,
   CreateDateColumn,

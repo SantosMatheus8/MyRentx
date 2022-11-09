@@ -1,5 +1,5 @@
-import { Car } from 'src/cars/entities/car.entity';
-import { User } from 'src/users/entities/user.entity';
+import { Car } from '../../cars/entities/car.entity';
+import { User } from '../../users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,

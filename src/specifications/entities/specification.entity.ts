@@ -1,4 +1,4 @@
-import { SpecificationsCar } from 'src/specifications-cars/entities/specifications-car.entity';
+import { SpecificationsCar } from '../../specifications-cars/entities/specifications-car.entity';
 import {
   Column,
   CreateDateColumn,

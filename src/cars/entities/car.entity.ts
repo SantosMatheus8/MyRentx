@@ -1,7 +1,7 @@
-import { CarsImage } from 'src/cars-image/entities/cars-image.entity';
-import { Category } from 'src/categories/entities/category.entity';
-import { Rental } from 'src/rentals/entities/rental.entity';
-import { SpecificationsCar } from 'src/specifications-cars/entities/specifications-car.entity';
+import { CarsImage } from '../../cars-image/entities/cars-image.entity';
+import { Category } from '../../categories/entities/category.entity';
+import { Rental } from '../../rentals/entities/rental.entity';
+import { SpecificationsCar } from '../../specifications-cars/entities/specifications-car.entity';
 import {
   Column,
   CreateDateColumn,
