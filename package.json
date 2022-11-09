@@ -72,10 +72,19 @@
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
+    "clearMocks": true,
+    "collectCoverage": true,
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "**/*.service.(t|j)s",
+      "**/*.controller.(t|j)s",
+      "**/*.middleware.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "coverageProvider": "v8",
+    "coverageReporters": [
+      "text-summary",
+      "lcov"
+    ]
   }
 }
