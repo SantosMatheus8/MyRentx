@@ -5,6 +5,7 @@ import { UsersService } from './users.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { passwordHash } from '../helpers/PasswordHash';
 
 dotenv.config();
 
@@ -209,6 +210,50 @@ describe('UsersService', () => {
           `Não foi encontrado um usuário com o ID : 1`,
         );
       }
+    });
+  });
+
+  describe('login', () => {
+    it('Should return invalid email or password error', async () => {
+      try {
+        await service.login('matheus@gmail.com', '123');
+      } catch (error) {
+        expect(error).toBeInstanceOf(BadRequestException);
+        expect(error.message).toEqual('Email ou senha inválidos');
+      }
+    });
+
+    it('Must return auth token', async () => {
+      user1.password = passwordHash('123');
+
+      const login = await service.login('matheus@gmail.com', '123');
+
+      expect(login).toHaveProperty('token');
+      expect(repository.findOne).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should return NotFoundException error', async () => {
+      jest.spyOn(repository, 'findOne').mockResolvedValueOnce(undefined);
+
+      try {
+        await service.login('matheus@gmail.com', '123');
+      } catch (error) {
+        expect(error).toBeInstanceOf(NotFoundException);
+        expect(error.message).toEqual('Email informado não foi encontrado');
+      }
+    });
+  });
+
+  describe('updatePassword', () => {
+    it('User password must be reset', async () => {
+      const user = await service.updatePassword({
+        verificationCode: process.env.VERIFICATION_CODE,
+        password: '123',
+      });
+
+      expect(user.id).toEqual('1ca415c6-32be-488c-b7bf-12b8649c99bd');
+      expect(user.email).toEqual('matheus@gmail.com');
+      expect(repository.findOne).toHaveBeenCalledTimes(1);
     });
   });
 });
