@@ -48,6 +48,7 @@ describe('RentalsController', () => {
             findOne: jest.fn().mockResolvedValue(rentalList[0]),
             update: jest.fn().mockResolvedValue(updatedRental),
             remove: jest.fn().mockResolvedValue(rentalList[0]),
+            devolution: jest.fn().mockResolvedValue(rentalList[0]),
           },
         },
       ],
@@ -122,6 +123,17 @@ describe('RentalsController', () => {
 
       expect(res).toEqual(rentalList[0]);
       expect(service.remove).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('devolution', () => {
+    it('A rental must be terminated', async () => {
+      const res = await controller.devolution(
+        '1ca415c6-32be-488c-b7bf-12b8649c99bd',
+      );
+
+      expect(res).toEqual(rentalList[0]);
+      expect(service.devolution).toHaveBeenCalledTimes(1);
     });
   });
 });
