@@ -5,6 +5,7 @@ import { RentalsService } from './rentals.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Car } from '../cars/entities/car.entity';
 import { User } from '../users/entities/user.entity';
+import { NotFoundException } from '@nestjs/common';
 
 const rental1 = new Rental();
 rental1.id = '1ca415c6-32be-488c-b7bf-12b8649c99bd';
@@ -67,6 +68,7 @@ describe('RentalsService', () => {
           provide: getRepositoryToken(Car),
           useValue: {
             findOne: jest.fn().mockResolvedValue(car),
+            save: jest.fn().mockResolvedValue(car),
           },
         },
         {
@@ -89,5 +91,101 @@ describe('RentalsService', () => {
     expect(repository).toBeDefined();
     expect(carRepository).toBeDefined();
     expect(userRepository).toBeDefined();
+  });
+
+  describe('findOne', () => {
+    it('Must return a specific rental', async () => {
+      const rental = await service.findOne(
+        '1ca415c6-32be-488c-b7bf-12b8649c99bd',
+      );
+
+      expect(rental).toEqual(rentalList[0]);
+      expect(repository.findOne).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should return NotFoundException error', async () => {
+      jest.spyOn(repository, 'findOne').mockResolvedValueOnce(undefined);
+
+      try {
+        await service.findOne('1');
+      } catch (error) {
+        expect(error).toBeInstanceOf(NotFoundException);
+        expect(error.message).toEqual(
+          `Não foi encontrado um aluguel com o ID : 1`,
+        );
+      }
+    });
+  });
+
+  describe('remove', () => {
+    it('Must delete a specific rental', async () => {
+      const rental = await service.remove(
+        '1ca415c6-32be-488c-b7bf-12b8649c99bd',
+      );
+
+      expect(rental).toBe(rentalList[0]);
+      expect(repository.findOne).toHaveBeenCalledTimes(1);
+      expect(repository.remove).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('devolution', () => {
+    it('A rental must be terminated', async () => {
+      const rental = await service.devolution(
+        '1ca415c6-32be-488c-b7bf-12b8649c99bd',
+      );
+
+      expect(rental).toBe(rentalList[0]);
+      expect(repository.findOne).toHaveBeenCalledTimes(1);
+      expect(carRepository.findOne).toHaveBeenCalledTimes(1);
+      expect(repository.save).toHaveBeenCalledTimes(1);
+      expect(carRepository.save).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should return NotFoundException error', async () => {
+      jest.spyOn(carRepository, 'findOne').mockResolvedValueOnce(undefined);
+
+      try {
+        await service.devolution('1ca415c6-32be-488c-b7bf-12b8649c99bd');
+      } catch (error) {
+        expect(error).toBeInstanceOf(NotFoundException);
+        expect(error.message).toEqual(
+          `Não foi encontrado um carro com o ID informado`,
+        );
+      }
+    });
+  });
+
+  describe('update', () => {
+    it('Must update a specific rental', async () => {
+      const updatedRental = rental1;
+      updatedRental.carId = '23c8ac61-d308-498d-9fa0-a3867bffbbb2';
+
+      jest.spyOn(repository, 'save').mockResolvedValueOnce(updatedRental);
+
+      const rental = await service.update(
+        '1ca415c6-32be-488c-b7bf-12b8649c99bd',
+        { carId: '23c8ac61-d308-498d-9fa0-a3867bffbbb2' },
+      );
+
+      expect(rental).toEqual(updatedRental);
+      expect(repository.preload).toHaveBeenCalledTimes(1);
+      expect(repository.save).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should return NotFoundException error', async () => {
+      jest.spyOn(repository, 'preload').mockResolvedValueOnce(undefined);
+
+      try {
+        await service.update('1', {
+          carId: '23c8ac61-d308-498d-9fa0-a3867bffbbb2',
+        });
+      } catch (error) {
+        expect(error).toBeInstanceOf(NotFoundException);
+        expect(error.message).toEqual(
+          `Não foi encontrado um aluguel com o ID : 1`,
+        );
+      }
+    });
   });
 });
