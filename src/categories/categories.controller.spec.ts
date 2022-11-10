@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CategoriesController } from './categories.controller';
 import { CategoriesService } from './categories.service';
+import { CreateCategoryDto } from './dto/create-category.dto';
+import { UpdateCategoryDto } from './dto/update-category.dto';
 import { Category } from './entities/category.entity';
 
 const category1 = new Category();
@@ -46,5 +48,64 @@ describe('CategoriesController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
     expect(service).toBeDefined();
+  });
+
+  describe('create', () => {
+    it('A category must be created', async () => {
+      const body: CreateCategoryDto = {
+        name: 'SUV',
+        description: 'Category Description',
+      };
+
+      const res = await controller.create(body);
+
+      expect(res).toEqual(categoryList[0]);
+      expect(service.create).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('findAll', () => {
+    it('Must list all categories', async () => {
+      const res = await controller.findAll();
+
+      expect(res).toEqual(categoryList);
+      expect(service.findAll).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('findOne', () => {
+    it('Must return a specific category', async () => {
+      const res = await controller.findOne(
+        '1ca415c6-32be-488c-b7bf-12b8649c99bd',
+      );
+
+      expect(res).toEqual(categoryList[0]);
+      expect(service.findOne).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('update', () => {
+    it('Must update a specific category', async () => {
+      const body: UpdateCategoryDto = { name: 'Sport' };
+
+      const res = await controller.update(
+        '1ca415c6-32be-488c-b7bf-12b8649c99bd',
+        body,
+      );
+
+      expect(res).toEqual(updatedCategory);
+      expect(service.update).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('remove', () => {
+    it('Must delete a specific category', async () => {
+      const res = await controller.remove(
+        '1ca415c6-32be-488c-b7bf-12b8649c99bd',
+      );
+
+      expect(res).toEqual(categoryList[0]);
+      expect(service.remove).toHaveBeenCalledTimes(1);
+    });
   });
 });
