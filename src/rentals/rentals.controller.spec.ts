@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { Car } from '../cars/entities/car.entity';
 import { User } from '../users/entities/user.entity';
+import { CreateRentalDto } from './dto/create-rental.dto';
+import { UpdateRentalDto } from './dto/update-rental.dto';
 import { Rental } from './entities/rental.entity';
 import { RentalsController } from './rentals.controller';
 import { RentalsService } from './rentals.service';
@@ -58,5 +60,68 @@ describe('RentalsController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
     expect(service).toBeDefined();
+  });
+
+  describe('create', () => {
+    it('A rental must be created', async () => {
+      const body: CreateRentalDto = {
+        startDate: new Date('2022-11-08'),
+        expectedReturnDate: new Date(),
+        userId: 'f2f39367-dc78-40a6-844a-6b7fc0bc7464',
+        carId: 'cc2a4ee9-69f5-4629-9d61-678f9b075121',
+      };
+
+      const res = await controller.create(body);
+
+      expect(res).toEqual(rentalList[0]);
+      expect(service.create).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('findAll', () => {
+    it('Must list all rentals', async () => {
+      const res = await controller.findAll();
+
+      expect(res).toEqual(rentalList);
+      expect(service.findAll).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('findOne', () => {
+    it('Must return a specific rental', async () => {
+      const res = await controller.findOne(
+        '1ca415c6-32be-488c-b7bf-12b8649c99bd',
+      );
+
+      expect(res).toEqual(rentalList[0]);
+      expect(service.findOne).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('update', () => {
+    it('Must update a specific rental', async () => {
+      const body: UpdateRentalDto = {
+        carId: '23c8ac61-d308-498d-9fa0-a3867bffbbb2',
+      };
+
+      const res = await controller.update(
+        '1ca415c6-32be-488c-b7bf-12b8649c99bd',
+        body,
+      );
+
+      expect(res).toEqual(updatedRental);
+      expect(service.update).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('remove', () => {
+    it('Must delete a specific rental', async () => {
+      const res = await controller.remove(
+        '1ca415c6-32be-488c-b7bf-12b8649c99bd',
+      );
+
+      expect(res).toEqual(rentalList[0]);
+      expect(service.remove).toHaveBeenCalledTimes(1);
+    });
   });
 });
