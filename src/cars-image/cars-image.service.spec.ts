@@ -26,8 +26,8 @@ carImage2.id = 'c3d6b2a2-0c41-45da-ad0f-c5b20318c647';
 carImage2.name = '4X4 Photo';
 carImage2.description = 'Photo description';
 
-const updatedCategory = carImage1;
-updatedCategory.name = 'Sport car Photo';
+const updatedCarImage = carImage1;
+updatedCarImage.name = 'Sport car Photo';
 
 const carImageList: CarsImage[] = [carImage1, carImage2];
 describe('CarsImageService', () => {
@@ -138,14 +138,14 @@ describe('CarsImageService', () => {
 
   describe('update', () => {
     it('Must update a specific carImage', async () => {
-      jest.spyOn(repository, 'save').mockResolvedValueOnce(updatedCategory);
+      jest.spyOn(repository, 'save').mockResolvedValueOnce(updatedCarImage);
 
       const carImage = await service.update(
         '1ca415c6-32be-488c-b7bf-12b8649c99bd',
         { name: 'Sport' },
       );
 
-      expect(carImage).toEqual(updatedCategory);
+      expect(carImage).toEqual(updatedCarImage);
       expect(repository.preload).toHaveBeenCalledTimes(1);
       expect(repository.save).toHaveBeenCalledTimes(1);
     });
