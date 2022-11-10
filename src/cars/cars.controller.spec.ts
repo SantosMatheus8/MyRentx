@@ -2,6 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Category } from '../categories/entities/category.entity';
 import { CarsController } from './cars.controller';
 import { CarsService } from './cars.service';
+import { CreateCarDto } from './dto/create-car.dto';
+import { UpdateCarDto } from './dto/update-car.dto';
 import { Car } from './entities/car.entity';
 
 const category = new Category();
@@ -60,5 +62,69 @@ describe('CarsController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
     expect(service).toBeDefined();
+  });
+
+  describe('create', () => {
+    it('A car must be created', async () => {
+      const body: CreateCarDto = {
+        name: 'HR-V',
+        description: 'Car Description',
+        dailyRate: 80,
+        licensePlate: '008459234',
+        fineAmount: 150,
+        brand: '36364734',
+        categoryId: 'c3d6b2a2-0c41-45da-ad0f-c5b20318c647',
+      };
+
+      const res = await controller.create(body);
+
+      expect(res).toEqual(carList[0]);
+      expect(service.create).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('findAll', () => {
+    it('Must list all cars', async () => {
+      const res = await controller.findAll();
+
+      expect(res).toEqual(carList);
+      expect(service.findAll).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('findOne', () => {
+    it('Must return a specific car', async () => {
+      const res = await controller.findOne(
+        '1ca415c6-32be-488c-b7bf-12b8649c99bd',
+      );
+
+      expect(res).toEqual(carList[0]);
+      expect(service.findOne).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('update', () => {
+    it('Must update a specific car', async () => {
+      const body: UpdateCarDto = { name: 'WR-V' };
+
+      const res = await controller.update(
+        '1ca415c6-32be-488c-b7bf-12b8649c99bd',
+        body,
+      );
+
+      expect(res).toEqual(updatedCar);
+      expect(service.update).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('remove', () => {
+    it('Must delete a specific car', async () => {
+      const res = await controller.remove(
+        '1ca415c6-32be-488c-b7bf-12b8649c99bd',
+      );
+
+      expect(res).toEqual(carList[0]);
+      expect(service.remove).toHaveBeenCalledTimes(1);
+    });
   });
 });
